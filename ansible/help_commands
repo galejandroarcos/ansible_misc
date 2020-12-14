@@ -1,0 +1,23 @@
+#ping a todas las maquinas del inventario
+ansible -m ping all
+
+#Ejecuta comando linux "uname" en todas las maquinas del grupo webservers y loadbalancers del inventario.
+ansible -m shell -a "uname" webservers:loadbalancers
+
+#Genera una nueva estructura de rol llamada webservers. Tener en cuenta que esta estructura debe contar con los archivos ansible.cfg, hosts-dev, index.php, keypair01.pem y setup-app.yml Ubicado en ansible-roles/
+ansible-galaxy init roles/webservers
+
+#Ejecuta ansible en modo check "dry run", para chequear lo que haria el comando, como un debug, pero realmente no ejecuta nada:
+ansible-playbook playbooks/setup-app.yml --
+
+#Ejecuta la tarea dentro del playbook setup-app.yml con atg upload, el resto de tareas sera ignorada
+ansible-playbook playbooks/setup-app.yml --tags upload
+
+#Crea un archivo encriptado para guardar variables importantes, Ejemplo: Contraseñas BBDD
+ansible-vault create vars/secret-variables.yml
+
+#Edita un archivo encriptado para guardar variables importantes, Ejemplo: Contraseñas BBDD
+ansible-vault edit vars/secret-variables.yml
+
+#Ejecuta un playbook con variables encriptadas, esto pedira la contraseña definida para abrir el yml con los parametros encriptados:
+ansible-playbook playbooks/setup-app.yml --ask-vault-pass
