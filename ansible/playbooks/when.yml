@@ -1,0 +1,10 @@
+---
+- hosts: labservers
+  become: yes
+  tasks:
+    - name: edit index
+      lineinfile:
+        path: /var/www/html/index.html
+		line: "Im back!"
+	  when:
+		- ansible_hostname == "scoldham3"
